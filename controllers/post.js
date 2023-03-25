@@ -84,7 +84,7 @@ export const getPosts = catchAsyncErrorbro(async (req, res, next) => {
     },
     // populate karke bhej rahe hai taki likes or comments
     // me dekh paye uski profile image or name etc
-  }).populate("likes owner comments.user");
+  }).populate("likes owner comments.user comments.reply.replyOwner");
 
   res.status(200).json({
     // 
@@ -137,6 +137,31 @@ export const addupdateComment = catchAsyncErrorbro(async (req, res, next) => {
     });
   }
 });
+export const replyToComment=catchAsyncErrorbro(async(req,res,next)=>{
+
+  let post = await postModel.findById(req.params.id);
+  if(!post) return next(new ErrorHandling('Post Not Found',400))
+  let commentId=req.body.commentId
+  let replyComment=req.body.comment
+
+   post.comments.forEach((comment,index)=>{
+    if(comment._id.toString()!==commentId.toString()) return 
+
+    comment.reply.push({
+      replyOwner:req.user._id,
+      replyComment:replyComment
+    })
+   
+   })
+   await post.save()
+   
+   return res.status(200).json({
+    message:'reply Successfully'
+   })
+
+
+
+})
 
 export const deletecomment = catchAsyncErrorbro(async (req, res, next) => {
   let post = await postModel.findById(req.params.id);

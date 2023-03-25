@@ -26,7 +26,19 @@ const postSchema=new mongoose.Schema({
             usercomment:{
                    type:String,
                    required:true
-            }
+            },
+            reply:[
+                {
+                    replyOwner:{
+                        type:mongoose.Schema.Types.ObjectId,
+                        ref:'User'
+                    },
+                    replyComment:{
+                        type:String,
+                        required:true
+                    }
+                }
+            ]
         }
     ],
     createdate:{
