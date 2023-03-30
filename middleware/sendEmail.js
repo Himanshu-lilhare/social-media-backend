@@ -3,8 +3,10 @@ import { createTransport } from "nodemailer";
 const sendemailbro=(to,message,text)=>{
 
     const transporter=createTransport({
-    host:process.env.HOST ,
-  port:process.env.SPORT,
+        service:'gmail',
+     port:process.env.SPORT,
+     secure:false,
+     require:true,
   auth: {
            user:process.env.USER,
            pass:process.env.PASS 
@@ -12,7 +14,14 @@ const sendemailbro=(to,message,text)=>{
 })
 
     transporter.sendMail({
-        from:"iamraj@gmail.com",to,subject:message,text
+        from:process.env.USER,to,subject:message,text
+    },function(err,info){
+        if(err){
+            console.log(err)
+            return 
+        }else{
+            console.log(info.response)
+        }
     })
 }
 
