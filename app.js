@@ -18,7 +18,7 @@ app.get('/',(req,res)=>{
     res.send("hello bro welcome")
 })
 app.use(cors({
-    origin:process.env.FRONTENDURL,
+    origin:'https://social-media-frontend-omega.vercel.app',
     credentials:true,
     method:["GET","POST","PUT","DELETE"]
 }))
